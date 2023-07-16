@@ -1,7 +1,12 @@
 package com.uziel.springcrud;
 
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+
+import com.uziel.springcrud.model.Course;
+import com.uziel.springcrud.repository.CourseRepository;
 
 @SpringBootApplication
 public class SpringCrudApplication {
@@ -10,4 +15,16 @@ public class SpringCrudApplication {
 		SpringApplication.run(SpringCrudApplication.class, args);
 	}
 
+	@Bean
+	CommandLineRunner initDatabase(CourseRepository courseRepository) {
+		return args -> {
+			courseRepository.deleteAll();
+
+			Course c = new Course();
+			c.setName(("Angular"));
+			c.setCategory("front-end");
+
+			courseRepository.save(c);
+		};
+	}
 }

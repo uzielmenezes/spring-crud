@@ -38,6 +38,7 @@ public class CourseController {
     }
 
     // PathVariable can pass the identifier in case the parameter doesn't match name
+    @SuppressWarnings("null")
     @GetMapping("/{id}")
     public ResponseEntity<Course> findCourseById(@PathVariable @NotNull @Positive Long id) {
         return courseRepository.findById(id)
@@ -46,14 +47,14 @@ public class CourseController {
     }
 
     // @RequestMapping(method = RequestMethod.POST)
+    @SuppressWarnings("null")
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
     public Course createCourse(@RequestBody @Valid Course course) {
         return courseRepository.save(course);
-        // return
-        // ResponseEntity.status(HttpStatus.CREATED).body(courseRepository.save(course));
     }
 
+    @SuppressWarnings("null")
     @PutMapping("/{id}")
     public ResponseEntity<Course> update(@PathVariable @NotNull @Positive Long id, @RequestBody @Valid Course course) {
 
@@ -67,6 +68,7 @@ public class CourseController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @SuppressWarnings("null")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable @NotNull @Positive Long id) {
         return courseRepository.findById(id)

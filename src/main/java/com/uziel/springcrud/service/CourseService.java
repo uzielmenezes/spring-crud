@@ -32,7 +32,7 @@ public class CourseService {
         return courseRepository.findAll()
                 .stream()
                 .map(courseMapper::toDTO)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @SuppressWarnings("null")

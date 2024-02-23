@@ -2,7 +2,7 @@ package com.uziel.springcrud.controller;
 
 import java.util.List;
 
-import com.uziel.springcrud.model.Course;
+import com.uziel.springcrud.dto.CourseDTO;
 import com.uziel.springcrud.service.CourseService;
 
 import jakarta.validation.Valid;
@@ -33,24 +33,24 @@ public class CourseController {
     }
 
     @GetMapping
-    public List<Course> listAllCourses() {
+    public List<CourseDTO> listAllCourses() {
         return courseService.listAllCourses();
     }
 
     @GetMapping("/{id}")
-    public Course findCourseById(@PathVariable @NotNull @Positive Long id) {
+    public CourseDTO findCourseById(@PathVariable @NotNull @Positive Long id) {
         return courseService.findCourseById(id);
     }
 
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
-    public Course createCourse(@RequestBody @Valid Course course) {
-        return courseService.createCourse(course);
+    public CourseDTO createCourse(@RequestBody @Valid CourseDTO courseDTO) {
+        return courseService.createCourse(courseDTO);
     }
 
     @PutMapping("/{id}")
-    public Course update(@PathVariable @NotNull @Positive Long id, @RequestBody @Valid Course course) {
-        return courseService.update(id, course);
+    public CourseDTO update(@PathVariable @NotNull @Positive Long id, @RequestBody @Valid CourseDTO courseDTO) {
+        return courseService.update(id, courseDTO);
     }
 
     @DeleteMapping("/{id}")

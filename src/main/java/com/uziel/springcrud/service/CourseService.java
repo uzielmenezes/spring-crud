@@ -1,11 +1,11 @@
 package com.uziel.springcrud.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+import com.uziel.springcrud.exception.RecordNotFoundException;
 import com.uziel.springcrud.model.Course;
 import com.uziel.springcrud.repository.CourseRepository;
 
@@ -28,29 +28,30 @@ public class CourseService {
         return courseRepository.findAll();
     }
 
-    public Optional<Course> findCourseById(@NonNull @NotNull @Positive Long id) {
-        return courseRepository.findById(id);
+    public Course findCourseById(@NonNull @NotNull @Positive Long id) {
+        return courseRepository.findById(id).orElseThrow(() -> new RecordNotFoundException(id));
     }
 
     public Course createCourse(@Valid @NonNull Course course) {
         return courseRepository.save(course);
     }
 
-    public Optional<Course> update(@NonNull @NotNull @Positive Long id, @Valid Course course) {
-        return courseRepository.findById(id)
-                .map(recordFound -> {
-                    recordFound.setName(course.getName());
-                    recordFound.setCategory(course.getCategory());
-                    return courseRepository.save(recordFound);
-                });
+    public Course update(@NonNull @NotNull @Positive Long id, @Valid Course course) {
+        Course selectedCourse = courseRepository.findById(id)
+                .orElseThrow(() -> new RecordNotFoundException(id));
+
+        selectedCourse.setName(course.getName());
+        selectedCourse.setCategory(course.getCategory());
+
+        return courseRepository.save(selectedCourse);
     }
 
-    public boolean delete(@NonNull @NotNull @Positive Long id) {
-        return courseRepository.findById(id)
-                .map(recordValue -> {
-                    courseRepository.deleteById(id);
-                    return true;
-                })
-                .orElse(false);
+    public void delete(@NonNull @NotNull @Positive Long id) {
+        courseRepository.findById(id)
+                .ifPresentOrElse(
+                        courseRepository::delete,
+                        () -> {
+                            throw new RecordNotFoundException(id);
+                        });
     }
 }

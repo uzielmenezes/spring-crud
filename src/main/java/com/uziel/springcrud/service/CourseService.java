@@ -53,7 +53,7 @@ public class CourseService {
                 .orElseThrow(() -> new RecordNotFoundException(id));
 
         selectedCourse.setName(courseDTO.name());
-        selectedCourse.setCategory(courseDTO.category());
+        selectedCourse.setCategory(courseMapper.convertCategoryValue(courseDTO.category()));
 
         return courseMapper.toDTO(courseRepository.save(selectedCourse));
     }

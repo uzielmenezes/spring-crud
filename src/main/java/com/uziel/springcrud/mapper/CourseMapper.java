@@ -3,6 +3,7 @@ package com.uziel.springcrud.mapper;
 import org.springframework.stereotype.Component;
 
 import com.uziel.springcrud.dto.CourseDTO;
+import com.uziel.springcrud.enums.Category;
 import com.uziel.springcrud.model.Course;
 
 import jakarta.validation.constraints.NotNull;
@@ -11,7 +12,7 @@ import jakarta.validation.constraints.NotNull;
 public class CourseMapper {
 
     public CourseDTO toDTO(@NotNull Course course) {
-        return new CourseDTO(course.getId(), course.getName(), course.getCategory());
+        return new CourseDTO(course.getId(), course.getName(), course.getCategory().getValue());
     }
 
     public Course toEntity(@NotNull CourseDTO courseDTO) {
@@ -20,7 +21,15 @@ public class CourseMapper {
             course.setId(courseDTO.id());
         }
         course.setName(courseDTO.name());
-        course.setCategory(courseDTO.category());
+        course.setCategory(this.convertCategoryValue(courseDTO.category()));
         return course;
+    }
+
+    public Category convertCategoryValue(@NotNull String value) {
+        return switch (value) {
+            case "Front-End" -> Category.FRONT_END;
+            case "Back-End" -> Category.BACK_END;
+            default -> throw new IllegalArgumentException("Invalid Category: " + value);
+        };
     }
 }

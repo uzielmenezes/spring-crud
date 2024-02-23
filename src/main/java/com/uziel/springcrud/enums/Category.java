@@ -10,4 +10,9 @@ public enum Category {
 
     private String value;
 
+    @Override
+    public String toString() {
+        return value;
+    }
+
 }

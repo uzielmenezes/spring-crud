@@ -9,4 +9,9 @@ public enum Status {
     ACTIVE("Active"), INACTIVE("Inactive");
 
     private String value;
+
+    @Override
+    public String toString() {
+        return value;
+    }
 }

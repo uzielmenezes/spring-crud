@@ -4,14 +4,19 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.validator.constraints.Length;
 
+import com.uziel.springcrud.enums.Category;
+import com.uziel.springcrud.enums.Status;
+import com.uziel.springcrud.enums.converters.CategoryConverter;
+import com.uziel.springcrud.enums.converters.StatusConverter;
+
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
 @Data
@@ -30,17 +35,13 @@ public class Course {
     @Column(length = 50, nullable = false)
     private String name;
 
-    @NotBlank
     @NotNull
-    @Length(max = 10)
-    @Pattern(regexp = "Back-End|Front-End")
     @Column(length = 10, nullable = false)
-    private String category;
+    @Convert(converter = CategoryConverter.class)
+    private Category category;
 
-    @NotBlank
     @NotNull
-    @Length(max = 10)
-    @Pattern(regexp = "Active|Inactive")
     @Column(length = 10, nullable = false)
-    private String status = "Active";
+    @Convert(converter = StatusConverter.class)
+    private Status status = Status.ACTIVE;
 }

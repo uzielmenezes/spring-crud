@@ -52,8 +52,13 @@ public class CourseService {
         Course selectedCourse = courseRepository.findById(id)
                 .orElseThrow(() -> new RecordNotFoundException(id));
 
+        Course course = courseMapper.toEntity(courseDTO);
         selectedCourse.setName(courseDTO.name());
         selectedCourse.setCategory(courseMapper.convertCategoryValue(courseDTO.category()));
+
+        // cleaning lessons to add new ones from update
+        selectedCourse.getLessons().clear();
+        course.getLessons().forEach(lesson -> selectedCourse.getLessons().add(lesson));
 
         return courseMapper.toDTO(courseRepository.save(selectedCourse));
     }

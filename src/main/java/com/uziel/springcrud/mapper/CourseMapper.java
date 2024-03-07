@@ -8,6 +8,7 @@ import com.uziel.springcrud.dto.CourseDTO;
 import com.uziel.springcrud.dto.LessonDTO;
 import com.uziel.springcrud.enums.Category;
 import com.uziel.springcrud.model.Course;
+import com.uziel.springcrud.model.Lesson;
 
 import jakarta.validation.constraints.NotNull;
 
@@ -31,6 +32,17 @@ public class CourseMapper {
         }
         course.setName(courseDTO.name());
         course.setCategory(this.convertCategoryValue(courseDTO.category()));
+
+        List<Lesson> lessons = courseDTO.lessons().stream().map(lessonDTO -> {
+            var lesson = new Lesson();
+            lesson.setId(lessonDTO.id());
+            lesson.setName(lessonDTO.name());
+            lesson.setYoutubeUrl(lessonDTO.youtubeUrl());
+            lesson.setCourse(course);
+            return lesson;
+        }).toList();
+        course.setLessons(lessons);
+
         return course;
     }
 

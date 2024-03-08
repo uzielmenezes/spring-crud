@@ -28,13 +28,13 @@ public class SpringCrudApplication {
 
 			Lesson l = new Lesson();
 			l.setName("Introdução");
-			l.setYoutubeUrl("watch?=1");
+			l.setYoutubeUrl("watch?=1111");
 			l.setCourse(c);
 			c.getLessons().add(l);
 
 			Lesson l1 = new Lesson();
 			l1.setName("Angular");
-			l1.setYoutubeUrl("watch?=2");
+			l1.setYoutubeUrl("watch?=1112");
 			l1.setCourse(c);
 			c.getLessons().add(l1);
 

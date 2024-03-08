@@ -27,13 +27,13 @@ public class Lesson {
 
     @NotBlank
     @NotNull
-    @Length(min = 3, max = 100)
+    @Length(min = 5, max = 100)
     @Column(length = 100, nullable = false)
     private String name;
 
     @NotBlank
     @NotNull
-    @Length(min = 3, max = 11)
+    @Length(min = 10, max = 11)
     @Column(length = 11, nullable = false)
     private String youtubeUrl;
 

@@ -2,18 +2,23 @@ package com.uziel.springcrud.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import com.uziel.springcrud.dto.CourseDTO;
+import com.uziel.springcrud.dto.CoursePageDTO;
 import com.uziel.springcrud.exception.RecordNotFoundException;
 import com.uziel.springcrud.mapper.CourseMapper;
 import com.uziel.springcrud.model.Course;
 import com.uziel.springcrud.repository.CourseRepository;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 
 @Validated
 @Service
@@ -27,11 +32,11 @@ public class CourseService {
         this.courseMapper = courseMapper;
     }
 
-    public List<CourseDTO> listAllCourses() {
-        return courseRepository.findAll()
-                .stream()
-                .map(courseMapper::toDTO)
-                .toList();
+    public CoursePageDTO listAllCourses(@PositiveOrZero int page, @Positive @Max(100) int pageSize) {
+
+        Page<Course> coursePage = courseRepository.findAll(PageRequest.of(page, pageSize));
+        List<CourseDTO> courses = coursePage.get().map(courseMapper::toDTO).toList();
+        return new CoursePageDTO(courses, coursePage.getTotalElements(), coursePage.getTotalPages());
     }
 
     @SuppressWarnings("null")

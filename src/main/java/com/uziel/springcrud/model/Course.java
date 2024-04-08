@@ -57,4 +57,20 @@ public class Course {
     @Valid
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "course")
     private List<Lesson> lessons = new ArrayList<>();
+
+    public void addLesson(Lesson lesson) {
+        if (lesson == null) {
+            throw new IllegalArgumentException("Lesson cannot be null.");
+        }
+        lesson.setCourse(this);
+        this.lessons.add(lesson);
+    }
+
+    public void removeLesson(Lesson lesson) {
+        if (lesson == null) {
+            throw new IllegalArgumentException("Lesson cannot be null.");
+        }
+        lesson.setCourse(null);
+        this.lessons.remove(lesson);
+    }
 }

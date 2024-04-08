@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 import com.uziel.springcrud.enums.Category;
+import com.uziel.springcrud.enums.Status;
 import com.uziel.springcrud.model.Course;
 import com.uziel.springcrud.model.Lesson;
 import com.uziel.springcrud.repository.CourseRepository;
@@ -19,28 +20,25 @@ public class SpringCrudApplication {
 
 	@Bean
 	CommandLineRunner initDatabase(CourseRepository courseRepository) {
-		return args -> {
-			courseRepository.deleteAll();
+		return args -> extracted(courseRepository);
+	}
 
-			for (int i = 0; i < 20; i++) {
-				Course c = new Course();
-				c.setName(("Angular"));
-				c.setCategory(Category.FRONT_END);
+	private void extracted(CourseRepository courseRepository) {
+		courseRepository.deleteAll();
+		for (int i = 1; i < 5; i++) {
+			Course c = new Course();
+			c.setName("Course " + i);
+			c.setCategory(Category.FRONT_END);
+			c.setStatus(Status.ACTIVE);
 
-				Lesson l = new Lesson();
-				l.setName("Introdução");
-				l.setYoutubeUrl("watch?=1111");
-				l.setCourse(c);
-				c.getLessons().add(l);
-
-				Lesson l1 = new Lesson();
-				l1.setName("Angular");
-				l1.setYoutubeUrl("watch?=1112");
-				l1.setCourse(c);
-				c.getLessons().add(l1);
-
-				courseRepository.save(c);
+			for (int j = 1; j < 10; j++) {
+				Lesson lesson = new Lesson();
+				lesson.setName("Lesson " + j);
+				lesson.setYoutubeUrl("Fj3Zvf-N4bk");
+				c.addLesson(lesson);
 			}
-		};
+
+			courseRepository.save(c);
+		}
 	}
 }

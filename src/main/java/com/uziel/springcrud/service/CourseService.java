@@ -39,21 +39,18 @@ public class CourseService {
         return new CoursePageDTO(courses, coursePage.getTotalElements(), coursePage.getTotalPages());
     }
 
-    @SuppressWarnings("null")
     public CourseDTO findCourseById(@NotNull @Positive Long id) {
         return courseRepository.findById(id)
                 .map(courseMapper::toDTO)
                 .orElseThrow(() -> new RecordNotFoundException(id));
     }
 
-    @SuppressWarnings("null")
     public CourseDTO createCourse(@Valid @NotNull CourseDTO courseDTO) {
         Course course = courseMapper.toEntity(courseDTO);
         return courseMapper.toDTO(courseRepository.save(course));
     }
 
     public CourseDTO update(@NotNull @Positive Long id, @Valid @NotNull CourseDTO courseDTO) {
-        @SuppressWarnings("null")
         Course selectedCourse = courseRepository.findById(id)
                 .orElseThrow(() -> new RecordNotFoundException(id));
 
@@ -68,7 +65,6 @@ public class CourseService {
         return courseMapper.toDTO(courseRepository.save(selectedCourse));
     }
 
-    @SuppressWarnings("null")
     public void delete(@NotNull @Positive Long id) {
         courseRepository.findById(id)
                 .ifPresentOrElse(
